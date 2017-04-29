@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface CityBikeRepository {
 
-    List<CityBikeStation> getClosestStations(double latitude, double longitude, int numberOfStations);
+    List<CityBikeStation> getClosestStations(Coordinates coordinates, int numberOfStations);
 }

@@ -9,6 +9,8 @@ public class Station {
     private String title;
     private String subtitle;
     private Coordinates center;
+    private Availability availability;
+
 
     public int getId() {
         return id;
@@ -42,6 +44,14 @@ public class Station {
         this.center = center;
     }
 
+    public Availability getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Coordinates {
 
@@ -62,6 +72,29 @@ public class Station {
 
         public void setLongitude(double longitude) {
             this.longitude = longitude;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Availability {
+
+        private int bikes;
+        private int locks;
+
+        public int getBikes() {
+            return bikes;
+        }
+
+        public void setBikes(int bikes) {
+            this.bikes = bikes;
+        }
+
+        public int getLocks() {
+            return locks;
+        }
+
+        public void setLocks(int locks) {
+            this.locks = locks;
         }
     }
 }
