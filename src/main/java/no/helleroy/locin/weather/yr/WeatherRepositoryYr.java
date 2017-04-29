@@ -1,8 +1,8 @@
-package no.helleroy.locin.repository;
+package no.helleroy.locin.weather.yr;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.helleroy.locin.domain.WeatherForecast;
-import no.helleroy.locin.dto.YrWeatherdata;
+import no.helleroy.locin.weather.WeatherForecast;
+import no.helleroy.locin.weather.WeatherRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

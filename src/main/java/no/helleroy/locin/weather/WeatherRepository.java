@@ -1,6 +1,4 @@
-package no.helleroy.locin.repository;
-
-import no.helleroy.locin.domain.WeatherForecast;
+package no.helleroy.locin.weather;
 
 public interface WeatherRepository {
 

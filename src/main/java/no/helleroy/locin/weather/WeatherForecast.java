@@ -1,4 +1,4 @@
-package no.helleroy.locin.domain;
+package no.helleroy.locin.weather;
 
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package no.helleroy.locin.dto;
+package no.helleroy.locin.weather.yr;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
