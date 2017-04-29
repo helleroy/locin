@@ -34,7 +34,7 @@ public class WeatherRepositoryYr implements WeatherRepository {
                             .build())
                     .execute();
 
-            YrWeatherdata yrWeatherdata = xmlMapper.readValue(response.body().bytes(), YrWeatherdata.class);
+            YrWeatherdata yrWeatherdata = xmlMapper.readValue(response.body().byteStream(), YrWeatherdata.class);
 
             WeatherForecast.Sun sun = new WeatherForecast.Sun(
                     yrWeatherdata.getSun().getSunrise(),

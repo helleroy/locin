@@ -111,6 +111,7 @@ public class CityBikeRepositoryOsloBysykkel implements CityBikeRepository {
                             .url(url)
                             .build())
                     .execute();
+
             return jsonMapper.readValue(availabilityResponse.body().byteStream(), parseType);
         } catch (IOException e) {
             throw new RuntimeException("Something went wrong when calling Oslo Bysykkel API", e);
