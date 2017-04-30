@@ -11,6 +11,7 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
@@ -34,9 +35,15 @@ public class CityBikeRepositoryOsloBysykkel implements CityBikeRepository {
     @Override
     public List<CityBikeStation> getClosestStations(Coordinates coordinates, int numberOfStations) {
 
-        StationsResponse stations = getStations();
-        StationsResponse availability = getAvailability();
-        StatusResponse status = getStatus();
+        CompletableFuture<StationsResponse> stationsFuture = getStations();
+        CompletableFuture<StationsResponse> availabilityFuture = getAvailability();
+        CompletableFuture<StatusResponse> statusFuture = getStatus();
+
+        CompletableFuture.allOf(stationsFuture, availabilityFuture, statusFuture).join();
+
+        StationsResponse stations = stationsFuture.join();
+        StationsResponse availability = availabilityFuture.join();
+        StatusResponse status = statusFuture.join();
 
         return Stream.concat(stations.getStations().stream(), availability.getStations().stream())
                 .collect(groupingBy(Station::getId))
@@ -75,32 +82,32 @@ public class CityBikeRepositoryOsloBysykkel implements CityBikeRepository {
                 .collect(toList());
     }
 
-    private StationsResponse getStations() {
-        return getFromAPI(url.newBuilder()
+    private CompletableFuture<StationsResponse> getStations() {
+        return CompletableFuture.supplyAsync(() -> getFromAPI(url.newBuilder()
                         .addPathSegment("api")
                         .addPathSegment("v1")
                         .addPathSegment("stations")
                         .build(),
-                StationsResponse.class);
+                StationsResponse.class));
     }
 
-    private StationsResponse getAvailability() {
-        return getFromAPI(url.newBuilder()
+    private CompletableFuture<StationsResponse> getAvailability() {
+        return CompletableFuture.supplyAsync(() -> getFromAPI(url.newBuilder()
                         .addPathSegment("api")
                         .addPathSegment("v1")
                         .addPathSegment("stations")
                         .addPathSegment("availability")
                         .build(),
-                StationsResponse.class);
+                StationsResponse.class));
     }
 
-    private StatusResponse getStatus() {
-        return getFromAPI(url.newBuilder()
+    private CompletableFuture<StatusResponse> getStatus() {
+        return CompletableFuture.supplyAsync(() -> getFromAPI(url.newBuilder()
                         .addPathSegment("api")
                         .addPathSegment("v1")
                         .addPathSegment("status")
                         .build(),
-                StatusResponse.class);
+                StatusResponse.class));
     }
 
     private <T> T getFromAPI(HttpUrl url, Class<T> parseType) {
