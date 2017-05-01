@@ -3,6 +3,7 @@ package no.helleroy.locin.weather.yr;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.helleroy.locin.weather.WeatherForecast;
 import no.helleroy.locin.weather.WeatherRepository;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,12 +17,12 @@ public class WeatherRepositoryYr implements WeatherRepository {
 
     private final OkHttpClient okHttpClient;
     private final ObjectMapper xmlMapper;
-    private final String yrURL;
+    private final HttpUrl url;
 
-    public WeatherRepositoryYr(OkHttpClient okHttpClient, ObjectMapper xmlMapper, String yrURL) {
+    public WeatherRepositoryYr(OkHttpClient okHttpClient, ObjectMapper xmlMapper, HttpUrl url) {
         this.okHttpClient = okHttpClient;
         this.xmlMapper = xmlMapper;
-        this.yrURL = yrURL;
+        this.url = url;
     }
 
     @Override
@@ -30,7 +31,14 @@ public class WeatherRepositoryYr implements WeatherRepository {
         try {
             Response response = okHttpClient
                     .newCall(new Request.Builder()
-                            .url(yrURL + "/sted/" + country + "/" + county + "/" + municipality + "/" + district + "/varsel_time_for_time.xml")
+                            .url(url.newBuilder()
+                                    .addPathSegment("sted")
+                                    .addPathSegment(country)
+                                    .addPathSegment(county)
+                                    .addPathSegment(municipality)
+                                    .addPathSegment(district)
+                                    .addPathSegment("varsel_time_for_time.xml")
+                                    .build())
                             .build())
                     .execute();
 
