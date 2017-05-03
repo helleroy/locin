@@ -10,6 +10,7 @@ import no.helleroy.locin.weather.yr.WeatherRepositoryYr;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -37,13 +38,16 @@ public class ApplicationConfig {
 
     @Bean
     public WeatherRepository weatherRepository(OkHttpClient okHttpClient,
-                                               @Qualifier("xmlMapper") ObjectMapper xmlMapper) {
-        return new WeatherRepositoryYr(okHttpClient, xmlMapper, HttpUrl.parse("http://www.yr.no/"));
+                                               @Qualifier("xmlMapper") ObjectMapper xmlMapper,
+                                               @Value("${yr.url}") String url) {
+        return new WeatherRepositoryYr(okHttpClient, xmlMapper, HttpUrl.parse(url));
     }
 
     @Bean
     public CityBikeRepository cityBikeRepository(OkHttpClient okHttpClient,
-                                                 @Qualifier("jsonMapper") ObjectMapper jsonMapper) {
-        return new CityBikeRepositoryOsloBysykkel(okHttpClient, jsonMapper, HttpUrl.parse("https://oslobysykkel.no/"), "9418739db1286ec7bc0334013e57fb51");
+                                                 @Qualifier("jsonMapper") ObjectMapper jsonMapper,
+                                                 @Value("${oslobysykkel.url}") String url,
+                                                 @Value("${oslobysykkel.clientidentifier}") String clientIdentifier) {
+        return new CityBikeRepositoryOsloBysykkel(okHttpClient, jsonMapper, HttpUrl.parse(url), clientIdentifier);
     }
 }
