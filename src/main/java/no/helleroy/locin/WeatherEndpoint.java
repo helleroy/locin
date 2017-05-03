@@ -2,6 +2,7 @@ package no.helleroy.locin;
 
 import no.helleroy.locin.weather.WeatherForecast;
 import no.helleroy.locin.weather.WeatherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ public class WeatherEndpoint {
 
     private final WeatherRepository weatherRepository;
 
+    @Autowired
     public WeatherEndpoint(WeatherRepository weatherRepository) {
         this.weatherRepository = weatherRepository;
     }
